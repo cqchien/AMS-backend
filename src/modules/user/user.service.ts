@@ -54,7 +54,7 @@ export class UserService {
         if (file && !this.validatorService.isImage(file.mimetype)) {
             throw new FileNotImageException();
         }
-
+        
         if (file) {
             user.avatar = await this.awsS3Service.uploadImage(file);
         }
