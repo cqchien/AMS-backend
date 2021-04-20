@@ -29,6 +29,7 @@ export class AuthService {
         const user = await this.userService.findOne({
             email: userLoginDto.email,
         });
+
         const isPasswordValid = await UtilsService.validateHash(
             userLoginDto.password,
             user && user.password,
