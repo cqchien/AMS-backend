@@ -1,3 +1,4 @@
+import { TeacherModule } from './modules/teacher/teacher.module';
 import './boilerplate.polyfill';
 
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 @Module({
     imports: [
         AuthModule,
+        TeacherModule,
         UserModule,
         TypeOrmModule.forRootAsync({
             imports: [SharedModule],

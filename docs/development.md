@@ -37,11 +37,11 @@ yarn install
 Before start install PostgreSQL and fill correct configurations in `.development.env` file
 
 ```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=postgres
-DB_DATABASE=AMS-backend
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DATABASE=AMS-backend
 ```
 
 Some helper script to work with database
