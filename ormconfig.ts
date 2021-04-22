@@ -19,6 +19,7 @@ for (const envName of Object.keys(process.env)) {
 
 module.exports = {
     type: 'postgres',
+    url: process.env.DATABASE_URL,
     host: process.env.POSTGRES_HOST,
     port: +process.env.POSTGRES_PORT,
     username: process.env.POSTGRES_USERNAME,
