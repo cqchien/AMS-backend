@@ -5,7 +5,7 @@
     "author": "Narek Hakobyan <narek.hakobyan.07@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "build": "tsc -p tsconfig.build.json && npm run copy:assets",
+        "build": "tsc -p tsconfig.build.json",
         "postbuild:prod": "copyfiles --up 1 src/**/*.json dist",
         "start:hmr": "node dist/main.hmr.ts",
         "tsc": "tsc",
@@ -29,7 +29,8 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "docs:dev": "vuepress dev -p 7070",
         "docs:build": "DEPLOY_ENV=gh-pages vuepress build",
-        "docs:deploy": "yarn docs:build && gh-pages -d .vuepress/dist"
+        "docs:deploy": "yarn docs:build && gh-pages -d .vuepress/dist",
+        
     },
     "dependencies": {
         "@nestjs/common": "^7.6.15",
