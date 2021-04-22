@@ -39,7 +39,7 @@ export class ConfigService {
     }
 
     get fallbackLanguage(): string {
-        return this.get('FALLBACK_LANGUAGE').toLowerCase();
+        return this.get('FALLBACK_LANGUAGE');
     }
 
     get typeOrmConfig(): TypeOrmModuleOptions {
