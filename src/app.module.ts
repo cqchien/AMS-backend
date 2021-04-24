@@ -1,3 +1,4 @@
+import { StudentModule } from './modules/student/student.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import './boilerplate.polyfill';
 
@@ -6,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './modules/user/user.module';
 import { ConfigService } from './shared/services/config.service';
 import { SharedModule } from './shared/shared.module';
 
@@ -14,7 +14,7 @@ import { SharedModule } from './shared/shared.module';
     imports: [
         AuthModule,
         TeacherModule,
-        UserModule,
+        StudentModule,
         TypeOrmModule.forRootAsync({
             imports: [SharedModule],
             useFactory: (configService: ConfigService) =>

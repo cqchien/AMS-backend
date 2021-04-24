@@ -1,6 +1,5 @@
 import { RoleType } from './../../../common/constants/role-type';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { String } from 'aws-sdk/clients/apigateway';
 import { AbstractDto } from './../../../common/dto/AbstractDto';
 
 export class TeacherDto extends AbstractDto {
@@ -18,4 +17,7 @@ export class TeacherDto extends AbstractDto {
 
     @ApiProperty()
     teacherCode: string;
+
+    @ApiProperty()
+    email: string;
 }
