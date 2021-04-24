@@ -7,7 +7,7 @@
     "scripts": {
         "build": "tsc -p tsconfig.build.json",
         "postbuild:prod": "copyfiles --up 1 src/**/*.json dist",
-        "start:hmr": "node dist/main.hmr.ts",
+        "start:hmr": "node dist/src/main.hmr.ts",
         "tsc": "tsc",
         "start": "ts-node -r tsconfig-paths/register src/main.ts",
         "start:dev": "nodemon ts-node -r tsconfig-paths/register src/main.ts",

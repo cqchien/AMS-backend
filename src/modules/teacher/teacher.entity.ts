@@ -1,5 +1,5 @@
+import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from './../../common/constants/role-type';
-import { AbstractEntity } from 'common/abstract.entity';
 import { Column, Entity } from 'typeorm';
 import { TeacherDto } from './dto/TeacherDto';
 
