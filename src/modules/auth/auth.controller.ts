@@ -24,7 +24,6 @@ export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     @ApiOkResponse({
-        type: LoginPayloadDto,
         description: 'User info with access token',
     })
     async userLogin(
@@ -33,6 +32,6 @@ export class AuthController {
         const userEntity = await this.authService.validateUser(userLoginDto);
 
         const token = await this.authService.createToken(userEntity);
-        return new LoginPayloadDto(userEntity.toDto(), token);
+        return new LoginPayloadDto(token);
     }
 }
