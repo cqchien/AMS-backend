@@ -20,5 +20,8 @@ export class TeacherEntity extends AbstractEntity<TeacherDto> {
     @Column({ name: 'teacher_code', unique: true })
     teacherCode: string;
 
+    @Column()
+    email: string;
+
     dtoClass = TeacherDto;
 }
