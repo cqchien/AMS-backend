@@ -39,7 +39,7 @@ export class ConfigService {
     }
 
     get fallbackLanguage(): string {
-        return this.get('FALLBACK_LANGUAGE').toLowerCase();
+        return this.get('FALLBACK_LANGUAGE');
     }
 
     get typeOrmConfig(): TypeOrmModuleOptions {
@@ -73,6 +73,11 @@ export class ConfigService {
             migrations,
             keepConnectionAlive: true,
             type: 'postgres',
+            // //To deploy heroku
+            // url: "postgres://mpgdahnnnwycit:e7493eb8c0aa1ecf3a276fa911e369f019ddea59f7d7efcb488abd573601dbdf@ec2-3-234-85-177.compute-1.amazonaws.com:5432/d7m22nin19d8c2",
+            // ssl: {
+            //     rejectUnauthorized: false
+            //   },
             host: this.get('POSTGRES_HOST'),
             port: this.getNumber('POSTGRES_PORT'),
             username: this.get('POSTGRES_USERNAME'),

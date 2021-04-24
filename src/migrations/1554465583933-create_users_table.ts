@@ -20,7 +20,9 @@ export class CreateUsersTable1554465583933 implements MigrationInterface {
                 "phone"         character varying,
                 CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"),
                 CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id")
-            )`);
+            );
+            INSERT INTO "users" ("id", "created_at", "updated_at", "first_name", "last_name", "avatar", "role", "email", "password", "phone")
+            VALUES (uuid_generate_v4(), now(), now(), 'Cao', 'Chien', NULL, 'USER', 'admin@gmail.com', '$2b$10$/W69rEJiH76QHrMDs1cBeu9OY6zQeJsW/1/AWjKPOidSZ5OooJWr.', NULL);`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {

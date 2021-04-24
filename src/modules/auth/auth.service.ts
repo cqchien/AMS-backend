@@ -1,12 +1,13 @@
+import { StudentEntity } from './../student/student.entity';
+import { TeacherEntity } from './../teacher/teacher.entity';
+import { StudentService } from './../student/student.service';
+import { TeacherService } from './../teacher/teacher.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import { UtilsService } from '../../providers/utils.service';
 import { ConfigService } from '../../shared/services/config.service';
-import { UserDto } from '../user/dto/UserDto';
-import { UserEntity } from '../user/user.entity';
-import { UserService } from '../user/user.service';
 import { TokenPayloadDto } from './dto/TokenPayloadDto';
 import { UserLoginDto } from './dto/UserLoginDto';
 
@@ -15,23 +16,33 @@ export class AuthService {
     constructor(
         public readonly jwtService: JwtService,
         public readonly configService: ConfigService,
-        public readonly userService: UserService,
+        public readonly teacherService: TeacherService,
+        public readonly studentService: StudentService,
     ) {}
 
-    async createToken(user: UserEntity | UserDto): Promise<TokenPayloadDto> {
+    async createToken(
+        user: TeacherEntity | StudentEntity,
+    ): Promise<TokenPayloadDto> {
         return new TokenPayloadDto({
             expiresIn: this.configService.getNumber('JWT_EXPIRATION_TIME'),
-            accessToken: await this.jwtService.signAsync({ id: user.id }),
+            accessToken: await this.jwtService.signAsync({
+                id: user.id,
+                role: user.role,
+            }),
         });
     }
 
-    async validateUser(userLoginDto: UserLoginDto): Promise<UserEntity> {
-        const user = await this.userService.findOne({
-            email: userLoginDto.email,
-        });
+    async validateUser(
+        userLoginDto: UserLoginDto,
+    ): Promise<TeacherEntity | StudentEntity> {
+        const { email, password, isMobileApp } = userLoginDto;
+        const service =
+            isMobileApp === false ? this.teacherService : this.studentService;
+
+        const user = await service.findOne({ email });
 
         const isPasswordValid = await UtilsService.validateHash(
-            userLoginDto.password,
+            password,
             user && user.password,
         );
         if (!user || !isPasswordValid) {

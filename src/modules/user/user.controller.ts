@@ -12,7 +12,6 @@ import { RoleType } from '../../common/constants/role-type';
 import { PageDto } from '../../common/dto/PageDto';
 import { AuthUser } from '../../decorators/auth-user.decorator';
 import { Auth, UUIDParam } from '../../decorators/http.decorators';
-import { TranslationService } from '../../shared/services/translation.service';
 import { UserDto } from './dto/UserDto';
 import { UsersPageOptionsDto } from './dto/UsersPageOptionsDto';
 import { UserEntity } from './user.entity';
@@ -23,21 +22,9 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(
         private userService: UserService,
-        private readonly translationService: TranslationService,
     ) {}
 
-    @Get('admin')
-    @Auth(RoleType.USER)
-    @HttpCode(HttpStatus.OK)
-    async admin(@AuthUser() user: UserEntity): Promise<string> {
-        const translation = await this.translationService.translate(
-            'keywords.admin',
-            {
-                lang: 'en',
-            },
-        );
-        return `${translation} ${user.firstName}`;
-    }
+
 
     @Get()
     @Auth(RoleType.USER)
