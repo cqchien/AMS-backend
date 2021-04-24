@@ -2,7 +2,6 @@ import { StudentEntity } from './../student/student.entity';
 import { TeacherEntity } from './../teacher/teacher.entity';
 import { StudentService } from './../student/student.service';
 import { TeacherService } from './../teacher/teacher.service';
-import { ValidatorService } from './../../shared/services/validator.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -19,7 +18,6 @@ export class AuthService {
         public readonly configService: ConfigService,
         public readonly teacherService: TeacherService,
         public readonly studentService: StudentService,
-        public readonly validatorService: ValidatorService,
     ) {}
 
     async createToken(
@@ -39,9 +37,7 @@ export class AuthService {
     ): Promise<TeacherEntity | StudentEntity> {
         const { email, password, isMobileApp } = userLoginDto;
         const service =
-            this.validatorService.isDesktopAccess() && isMobileApp === false
-                ? this.teacherService
-                : this.studentService;
+            isMobileApp === false ? this.teacherService : this.studentService;
 
         const user = await service.findOne({ email });
 

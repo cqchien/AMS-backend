@@ -7,12 +7,4 @@ export class ValidatorService {
 
         return imageMimeTypes.includes(mimeType);
     }
-
-    public isDesktopAccess(): boolean {
-        let check = false;
-        if (window.innerWidth > 768) {
-            check = true;
-        }
-        return check;
-    }
 }

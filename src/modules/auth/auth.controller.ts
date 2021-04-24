@@ -1,7 +1,7 @@
+import { TokenPayloadDto } from './dto/TokenPayloadDto';
 import {
     Body,
     Controller,
-    Get,
     HttpCode,
     HttpStatus,
     Post,
@@ -21,9 +21,12 @@ export class AuthController {
         public readonly authService: AuthService,
     ) {}
 
+    // Teacher can only login with website 
+    // Student can only login with mobile app
     @Post('login')
     @HttpCode(HttpStatus.OK)
     @ApiOkResponse({
+        type: TokenPayloadDto,
         description: 'User info with access token',
     })
     async userLogin(
