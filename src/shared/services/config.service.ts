@@ -73,7 +73,7 @@ export class ConfigService {
             migrations,
             keepConnectionAlive: true,
             type: 'postgres',
-            // to deploy heroku
+            // //To deploy heroku
             // url: "postgres://mpgdahnnnwycit:e7493eb8c0aa1ecf3a276fa911e369f019ddea59f7d7efcb488abd573601dbdf@ec2-3-234-85-177.compute-1.amazonaws.com:5432/d7m22nin19d8c2",
             // ssl: {
             //     rejectUnauthorized: false
