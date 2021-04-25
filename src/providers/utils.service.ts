@@ -61,4 +61,12 @@ export class UtilsService {
         }
         return bcrypt.compare(password, hash);
     }
+
+    /**
+     * Generate password with default string
+     * @return {string} password
+     */
+    static generatePassword(): string {
+        return Date.now().toString().substr(6);
+    }
 }
