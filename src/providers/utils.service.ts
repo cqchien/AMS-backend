@@ -49,18 +49,6 @@ export class UtilsService {
             .replace(/[^a-zA-Z0-9]+/g, '')
             .substr(0, length);
     }
-
-    /**
-     * generate random integer number
-     * @param {number} min
-     * @param {number} max
-     * @returns {number}}
-     */
-
-    static generateRandomInteger(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     /**
      * validate text with hash
      * @param {string} password
@@ -76,11 +64,9 @@ export class UtilsService {
 
     /**
      * Generate password with default string
-     * @param {string} code
      * @return {string} password
      */
-    static generatePassword(code: string): string {
-        const randomNumber = this.generateRandomInteger(100000, 99999);
-        return code + randomNumber.toString();
+    static generatePassword(): string {
+        return Date.now().toString().substr(6);
     }
 }
