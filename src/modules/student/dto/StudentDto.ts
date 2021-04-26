@@ -1,3 +1,4 @@
+import { StudentEntity } from './../student.entity';
 import { RoleType } from '../../../common/constants/role-type';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { AbstractDto } from '../../../common/dto/AbstractDto';
@@ -23,4 +24,14 @@ export class StudentDto extends AbstractDto {
 
     @ApiProperty()
     password: string;
+
+    constructor(student: StudentEntity) {
+        super(student);
+        this.name = student.name;
+        this.role = student.role;
+        this.schoolYear = student.schoolYear;
+        this.email = student.email;
+        this.class = student.class;
+        this.studentCode = student.studentCode;
+    }
 }

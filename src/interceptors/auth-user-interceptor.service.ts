@@ -1,3 +1,5 @@
+import { TeacherEntity } from './../modules/teacher/teacher.entity';
+import { StudentEntity } from './../modules/student/student.entity';
 import {
     CallHandler,
     ExecutionContext,
@@ -13,8 +15,7 @@ import { ContextService } from '../providers/context.service';
 export class AuthUserInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-
-        const user = <UserEntity>request.user;
+        const user = <StudentEntity | TeacherEntity>request.user;
         ContextService.setAuthUser(user);
 
         return next.handle();

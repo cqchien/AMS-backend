@@ -1,3 +1,5 @@
+import { TeacherEntity } from './../modules/teacher/teacher.entity';
+import { StudentEntity } from './../modules/student/student.entity';
 import requestContext from 'request-context';
 
 import { UserEntity } from '../modules/user/user.entity';
@@ -19,7 +21,7 @@ export class ContextService {
         return `${ContextService.nameSpace}.${key}`;
     }
 
-    static setAuthUser(user: UserEntity): void {
+    static setAuthUser(user: StudentEntity | TeacherEntity): void {
         ContextService.set(ContextService.authUserKey, user);
     }
 

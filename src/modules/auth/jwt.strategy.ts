@@ -1,3 +1,6 @@
+import { TeacherService } from './../teacher/teacher.service';
+import { StudentService } from './../student/student.service';
+import { RoleType } from './../../common/constants/role-type';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -9,7 +12,8 @@ import { UserService } from '../user/user.service';
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         public readonly configService: ConfigService,
-        public readonly userService: UserService,
+        public readonly studentService: StudentService,
+        public readonly teacherService: TeacherService,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,12 +21,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate({ iat, exp, id: userId }) {
+    async validate({ iat, exp, id, role }) {
         const timeDiff = exp - iat;
         if (timeDiff <= 0) {
             throw new UnauthorizedException();
         }
-        const user = await this.userService.findOne(userId);
+        const service =
+            role === RoleType.STUDENT
+                ? this.studentService
+                : this.teacherService;
+        const user = await service.findOne({ id });
 
         if (!user) {
             throw new UnauthorizedException();
