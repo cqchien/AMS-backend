@@ -14,9 +14,6 @@ export class TeacherDto extends AbstractDto {
     avatarLink: string;
 
     @ApiProperty()
-    password: string;
-
-    @ApiProperty()
     teacherCode: string;
 
     @ApiProperty()
