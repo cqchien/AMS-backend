@@ -8,18 +8,18 @@ export class RolesGuard implements CanActivate {
     constructor(private readonly _reflector: Reflector) {}
 
     canActivate(context: ExecutionContext): boolean {
-        const roles = this._reflector.get<string[]>(
-            'roles',
+        const role = this._reflector.get<string[]>(
+            'role',
             context.getHandler(),
         );
 
-        if (!roles) {
+        if (!role) {
             return true;
         }
 
         const request = context.switchToHttp().getRequest();
         const user = <UserEntity>request.user;
-
-        return roles.includes(user.role);
+        
+        return role.includes(user.role);
     }
 }

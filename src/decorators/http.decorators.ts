@@ -16,9 +16,9 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { AuthUserInterceptor } from '../interceptors/auth-user-interceptor.service';
 
-export function Auth(...roles: RoleType[]) {
+export function Auth(...role: RoleType[]) {
     return applyDecorators(
-        SetMetadata('roles', roles),
+        SetMetadata('role', role),
         UseGuards(AuthGuard, RolesGuard),
         ApiBearerAuth(),
         UseInterceptors(AuthUserInterceptor),
