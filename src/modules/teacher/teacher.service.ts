@@ -6,10 +6,14 @@ import { FindConditions } from 'typeorm';
 import { TeacherRepository } from './teacher.repository';
 import { Injectable } from '@nestjs/common';
 import { TeacherEntity } from './teacher.entity';
+import { MailService } from '../../mail/mail.service';
 
 @Injectable()
 export class TeacherService {
-    constructor(public readonly teacherRepository: TeacherRepository) {}
+    constructor(
+        public readonly teacherRepository: TeacherRepository,
+        private mailerService: MailService,
+    ) {}
 
     /**
      * Find single user
@@ -59,10 +63,12 @@ export class TeacherService {
             throw new UserConflictException();
         }
         const password = UtilsService.generatePassword();
+        const hashPassword = UtilsService.generateHash(password);
         const teacherEntity = await this.teacherRepository.create({
-            password,
+            password: hashPassword,
             ...createTeacherDto,
         });
+        await this.mailerService.sendUserConfirmation(teacherEntity, password);
         await this.teacherRepository.save(teacherEntity);
         return teacherEntity.toDto();
     }
