@@ -9,6 +9,7 @@ import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigService } from './shared/services/config.service';
 import { SharedModule } from './shared/shared.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
                 configService.typeOrmConfig,
             inject: [ConfigService],
         }),
+        MailModule,
     ],
 })
 export class AppModule implements NestModule {
