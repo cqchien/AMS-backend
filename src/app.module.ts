@@ -10,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigService } from './shared/services/config.service';
 import { SharedModule } from './shared/shared.module';
 import { MailModule } from './mail/mail.module';
+import { ClassModule } from './modules/class/class.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { MailModule } from './mail/mail.module';
             inject: [ConfigService],
         }),
         MailModule,
+        ClassModule,
     ],
 })
 export class AppModule implements NestModule {
