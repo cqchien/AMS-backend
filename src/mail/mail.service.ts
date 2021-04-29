@@ -10,9 +10,8 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: user.email,
-      // from: '"Support Team" <support@example.com>', // override default from
       subject: 'Welcome to Nice App! Confirm your Email',
-      template: __dirname + '/templates/confirmation.hbs', // `.hbs` extension is appended automatically
+      template: __dirname + '/templates/senPassword.hbs', // `.hbs` extension is appended automatically
       context: { // ✏️ filling curly brackets with content
         name: user.name,
         password,
