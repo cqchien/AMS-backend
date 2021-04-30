@@ -1,6 +1,7 @@
+import { ClassEntity } from './../class/class.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from './../../common/constants/role-type';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { TeacherDto } from './dto/TeacherDto';
 
 @Entity({ name: 'teacher' })
@@ -22,6 +23,9 @@ export class TeacherEntity extends AbstractEntity<TeacherDto> {
 
     @Column()
     email: string;
+
+    @OneToMany(()=> ClassEntity, cla => cla.teacher)
+    classes: ClassEntity[];
 
     dtoClass = TeacherDto;
 }
