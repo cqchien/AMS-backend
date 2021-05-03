@@ -6,22 +6,22 @@ export class CreateTeacherDto  {
     @IsString()
     @IsEmail()
     @ApiProperty()
-    readonly email: string;
+    email: string;
 
     @IsString()
     @ApiProperty()
-    readonly name: string;
+    name: string;
 
     @IsString()
     @ApiProperty()
     @IsEnum(RoleType)
-    readonly role: RoleType.TEACHER;
+    role: RoleType.TEACHER;
     
     @IsString()
     @ApiProperty()
-    readonly teacherCode: string;
+    teacherCode: string;
 
     @IsString()
     @ApiProperty()
-    readonly avatarLink: string;
+    avatarLink: string;
 }

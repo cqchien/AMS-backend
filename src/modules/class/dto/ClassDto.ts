@@ -31,15 +31,15 @@ export class ClassDto extends AbstractDto {
     @ApiProperty()
     teacher: TeacherDto;
 
-    constructor(classDto: ClassEntity) {
-        super(classDto);
-        this.courseCode = classDto.courseCode;
-        this.type = classDto.type;
-        this.desc = classDto.desc;
-        this.room = classDto.room;
-        this.startTime = classDto.startTime;
-        this.endTime = classDto.endTime;
-        this.qrCode = classDto.qrCode;
-        this.teacher = classDto.teacher;
+    constructor(classEntity: ClassEntity) {
+        super(classEntity);
+        this.courseCode = classEntity.courseCode;
+        this.type = classEntity.type;
+        this.desc = classEntity.desc;
+        this.room = classEntity.room;
+        this.startTime = classEntity.startTime;
+        this.endTime = classEntity.endTime;
+        this.qrCode = classEntity.qrCode;
+        this.teacher = classEntity.teacher;
     }
 }
