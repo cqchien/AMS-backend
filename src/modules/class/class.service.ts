@@ -1,3 +1,6 @@
+import { TeacherEntity } from './../teacher/teacher.entity';
+import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
+import { TeacherService } from './../teacher/teacher.service';
 import { DateTimeNotAcceptableException } from './../../exceptions/datetime-not-acceptable.exception';
 import { RecordConflictException } from './../../exceptions/record-conflict.exception';
 import { ClassDto } from './dto/ClassDto';
@@ -7,17 +10,39 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ClassService {
-    constructor(public readonly classRepository: ClassRepository) {}
+    constructor(
+        public readonly classRepository: ClassRepository,
+        public teacherService: TeacherService,
+    ) {}
 
     /**
      * @param createClassDto
      * @returns classDto
      */
     async createClass(createClassDto: CreateClassDto): Promise<ClassDto> {
-        const { courseCode, startTime, endTime } = createClassDto;
+        const {
+            courseCode,
+            startTime,
+            endTime,
+            type,
+            desc,
+            room,
+            teacherId,
+        } = createClassDto;
+
         const classExisted = await this.classRepository.findOne({ courseCode });
         if (classExisted) {
             throw new RecordConflictException('Class is existed in database');
+        }
+
+        let teacher: TeacherEntity;
+        if (teacherId) {
+            teacher = await this.teacherService.findOne({
+                id: teacherId,
+            });
+        }
+        if (!teacher) {
+            throw new UserNotFoundException();
         }
 
         if (startTime && endTime) {
@@ -30,10 +55,16 @@ export class ClassService {
                 );
             }
         }
-        const classEntity = await this.classRepository.create({
-            ...createClassDto,
+        const classEntity = this.classRepository.create({
+            courseCode,
+            startTime,
+            endTime,
+            type,
+            desc,
+            room,
+            teacher,
         });
         await this.classRepository.save(classEntity);
-        return classEntity.toDto();
+        return new ClassDto(classEntity, teacher.toDto());
     }
 }

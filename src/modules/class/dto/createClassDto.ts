@@ -1,6 +1,6 @@
 ('use strict');
 
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsString, IsUUID } from 'class-validator';
 
 import { ClassType } from './../../../common/constants/class-type';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -29,5 +29,9 @@ export class CreateClassDto {
     @IsString()
     @ApiPropertyOptional()
     endTime: string;
+
+    @IsString()
+    @ApiPropertyOptional()
+    teacherId: string;
 
 }
