@@ -1,7 +1,7 @@
 import { TeacherEntity } from './../teacher/teacher.entity';
 import { ClassType } from './../../common/constants/class-type';
 import { ClassDto } from './dto/ClassDto';
-import { AbstractEntity } from "common/abstract.entity";
+import { AbstractEntity } from "../../common/abstract.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({name: 'class'})
@@ -18,10 +18,10 @@ export class ClassEntity extends AbstractEntity<ClassDto> {
     @Column({nullable: true})
     room: string;
 
-    @Column({nullable: true})
+    @Column({nullable: true, name: "start_time"})
     startTime: string;
 
-    @Column({nullable: true})
+    @Column({nullable: true, name: "finish_time"})
     endTime: string;
 
     @Column()

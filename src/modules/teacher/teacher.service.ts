@@ -1,4 +1,4 @@
-import { UserConflictException } from './../../exceptions/user-conflict.exception';
+import { RecordConflictException } from './../../exceptions/record-conflict.exception';
 import { CreateTeacherDto } from './dto/createTeacherDto';
 import { UtilsService } from './../../providers/utils.service';
 import { TeacherDto } from './dto/TeacherDto';
@@ -60,7 +60,7 @@ export class TeacherService {
             email,
         });
         if (existTeacher) {
-            throw new UserConflictException();
+            throw new RecordConflictException('Teacher is existed in database');
         }
         const password = UtilsService.generatePassword();
         const hashPassword = UtilsService.generateHash(password);
