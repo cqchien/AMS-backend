@@ -1,3 +1,5 @@
+import { PageDto } from './../../common/dto/PageDto';
+import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { TeacherEntity } from './../teacher/teacher.entity';
 import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
 import { TeacherService } from './../teacher/teacher.service';
@@ -14,6 +16,22 @@ export class ClassService {
         public readonly classRepository: ClassRepository,
         public teacherService: TeacherService,
     ) {}
+
+    /**
+     *
+     * @param pageOptionDto
+     * @returns PageDto
+     */
+    async getClasses(
+        pageOptionDto: PageOptionsDto,
+    ): Promise<PageDto<ClassDto>> {
+        const queryBuilder = this.classRepository.createQueryBuilder('class');
+        const { items, pageMetaDto } = await queryBuilder.paginate(
+            pageOptionDto,
+        );
+
+        return items.toPageDto(pageMetaDto);
+    }
 
     /**
      * @param createClassDto
