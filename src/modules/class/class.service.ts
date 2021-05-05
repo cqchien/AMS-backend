@@ -1,3 +1,4 @@
+import { ClassEntity } from './class.entity';
 import { PageDto } from './../../common/dto/PageDto';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { TeacherEntity } from './../teacher/teacher.entity';
@@ -18,14 +19,20 @@ export class ClassService {
     ) {}
 
     /**
-     *
+     * Get All Classes with query by courseCode or room
      * @param pageOptionDto
      * @returns PageDto
      */
     async getClasses(
         pageOptionDto: PageOptionsDto,
     ): Promise<PageDto<ClassDto>> {
-        const queryBuilder = this.classRepository.createQueryBuilder('class');
+        let queryBuilder = this.classRepository.createQueryBuilder('class');
+        if (pageOptionDto.q) {
+            queryBuilder = queryBuilder.searchByString(pageOptionDto.q, [
+                'course_code',
+                'room',
+            ]);
+        }
         const { items, pageMetaDto } = await queryBuilder.paginate(
             pageOptionDto,
         );

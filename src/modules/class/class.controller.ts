@@ -33,7 +33,6 @@ export class ClassController {
     }
 
     @Get()
-    @Auth(RoleType.ADMIN, RoleType.TRAININGROOM)
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Get all class',
