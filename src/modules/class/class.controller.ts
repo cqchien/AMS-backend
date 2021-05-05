@@ -1,3 +1,6 @@
+import { AuthGuard } from '@nestjs/passport';
+import { UseInterceptors, UseGuards } from '@nestjs/common';
+import { AuthUserInterceptor } from './../../interceptors/auth-user-interceptor.service';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { PageDto } from './../../common/dto/PageDto';
 import { CreateClassDto } from './dto/createClassDto';
@@ -12,7 +15,7 @@ import {
     Query,
     ValidationPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { Auth } from '../../decorators/http.decorators';
 import { RoleType } from '../../common/constants/role-type';
 
@@ -33,6 +36,9 @@ export class ClassController {
     }
 
     @Get()
+    @UseGuards(AuthGuard())
+    @UseInterceptors(AuthUserInterceptor)
+    @ApiBearerAuth()
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Get all class',

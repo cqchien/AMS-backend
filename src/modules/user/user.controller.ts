@@ -10,11 +10,9 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../common/constants/role-type';
 import { PageDto } from '../../common/dto/PageDto';
-import { AuthUser } from '../../decorators/auth-user.decorator';
 import { Auth, UUIDParam } from '../../decorators/http.decorators';
 import { UserDto } from './dto/UserDto';
 import { UsersPageOptionsDto } from './dto/UsersPageOptionsDto';
-import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')

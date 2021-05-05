@@ -1,7 +1,8 @@
+import { StudentEntity } from './../modules/student/student.entity';
+import { TeacherEntity } from './../modules/teacher/teacher.entity';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { UserEntity } from '../modules/user/user.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -18,7 +19,7 @@ export class RolesGuard implements CanActivate {
         }
 
         const request = context.switchToHttp().getRequest();
-        const user = <UserEntity>request.user;
+        const user = <TeacherEntity | StudentEntity>request.user;
         
         return role.includes(user.role);
     }
