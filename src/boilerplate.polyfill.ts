@@ -78,14 +78,14 @@ SelectQueryBuilder.prototype.paginate = async function (
 
     const { entities, raw } = await selectQueryBuilder.getRawAndEntities();
 
-    const items = entities.map((entitiy, index) => {
-        const metaInfo = Reflect.getMetadata(VIRTUAL_COLUMN_KEY, entitiy) ?? {};
+    const items = entities.map((entity, index) => {
+        const metaInfo = Reflect.getMetadata(VIRTUAL_COLUMN_KEY, entity) ?? {};
         const item = raw[index];
 
         for (const [propertyKey, name] of Object.entries<string>(metaInfo)) {
-            entitiy[propertyKey] = item[name];
+            entity[propertyKey] = item[name];
         }
-        return entitiy;
+        return entity;
     });
 
     const pageMetaDto = new PageMetaDto({
