@@ -10,7 +10,7 @@ import { ClassDto } from './dto/ClassDto';
 import { CreateClassDto } from './dto/createClassDto';
 import { ClassRepository } from './class.repository';
 import { Injectable } from '@nestjs/common';
-import { RoleType } from 'common/constants/role-type';
+import { RoleType } from '../../common/constants/role-type';
 
 @Injectable()
 export class ClassService {
