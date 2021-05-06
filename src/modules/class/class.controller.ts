@@ -1,3 +1,6 @@
+import { TeacherEntity } from './../teacher/teacher.entity';
+import { StudentEntity } from './../student/student.entity';
+import { AuthUser } from './../../decorators/auth-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { UseInterceptors, UseGuards } from '@nestjs/common';
 import { AuthUserInterceptor } from './../../interceptors/auth-user-interceptor.service';
@@ -44,10 +47,10 @@ export class ClassController {
         description: 'Get all class',
         type: PageDto,
     })
-    getClasses(
+    getClasses(@AuthUser() user: StudentEntity | TeacherEntity, 
         @Query(new ValidationPipe({ transform: true }))
         pageOptionDto: PageOptionsDto,
     ): Promise<PageDto<ClassDto>> {
-        return this.classService.getClasses(pageOptionDto);
+        return this.classService.getClasses(user, pageOptionDto);
     }
 }
