@@ -42,42 +42,65 @@ export class ClassService {
     }
 
     /**
-     * 
-     * @param pageOptionDto 
-     * @param teacherId 
+     *
+     * @param pageOptionDto
+     * @param teacherId
      * @returns All class what this teacher teach.
      */
-    async getClassesByTeacher(pageOptionDto: PageOptionsDto, teacherId: string): Promise<PageDto<ClassDto>> {
+    async getClassesByTeacher(
+        pageOptionDto: PageOptionsDto,
+        teacherId: string,
+    ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
-        const classesByTeacher = queryBuilder.where('class.teacher_id = :teacherId', {teacherId});
+        const classesByTeacher = queryBuilder.where(
+            'class.teacher_id = :teacherId',
+            { teacherId },
+        );
         const { items, pageMetaDto } = await classesByTeacher.paginate(
             pageOptionDto,
         );
 
         return items.toPageDto(pageMetaDto);
     }
- 
 
-    async getClassesByStudent(PageOptionsDto: PageOptionsDto, studentId: string){
+    /**
+     *
+     * @param pageOptionDto
+     * @param studentId
+     * @returns All class what this student learn.
+     */
+    async getClassesByStudent(
+        pageOptionDto: PageOptionsDto,
+        studentId: string,
+    ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
-        const classesByStudent = queryBuilder.leftJoinAndSelect('class.id', 'checkin')
+        const classesByStudent = queryBuilder
+            .leftJoinAndSelect('class.checkin', 'checkin')
+            .leftJoinAndSelect('checkin.student', 'student')
+            .andWhere('student.id = :studentId', { studentId });
+        const { items, pageMetaDto } = await classesByStudent.paginate(
+            pageOptionDto,
+        );
+
+        return items.toPageDto(pageMetaDto);
     }
 
     /**
-     * 
-     * @param user 
-     * @param pageOptionDto 
+     *
+     * @param user
+     * @param pageOptionDto
      * @returns All Class depends on user role type.
      */
-    async getClasses(user : StudentEntity | TeacherEntity,
+    async getClasses(
+        user: StudentEntity | TeacherEntity,
         pageOptionDto: PageOptionsDto,
     ): Promise<PageDto<ClassDto>> {
-        const {role} = user;
-        if(role === RoleType.TEACHER){
-            return this.getClassesByTeacher(pageOptionDto, user.id)
-        }else if(role == RoleType.STUDENT){
-
-        }else {
+        const { role } = user;
+        if (role === RoleType.TEACHER) {
+            return this.getClassesByTeacher(pageOptionDto, user.id);
+        } else if (role == RoleType.STUDENT) {
+            return this.getClassesByStudent(pageOptionDto, user.id);
+        } else {
             return this.getAllClasses(pageOptionDto);
         }
     }
@@ -102,7 +125,7 @@ export class ClassService {
         if (classExisted) {
             throw new RecordConflictException('Class is existed in database');
         }
-        
+
         // If user send teacherId, check teacher is exist or not
         let teacher: TeacherEntity;
         if (teacherId) {
