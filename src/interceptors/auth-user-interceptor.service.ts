@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { UserEntity } from '../modules/user/user.entity';
 import { ContextService } from '../providers/context.service';
 
 @Injectable()

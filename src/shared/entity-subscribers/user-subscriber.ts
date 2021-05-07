@@ -1,3 +1,5 @@
+import { StudentEntity } from './../../modules/student/student.entity';
+import { TeacherEntity } from './../../modules/teacher/teacher.entity';
 import {
     EntitySubscriberInterface,
     EventSubscriber,
@@ -5,22 +7,21 @@ import {
     UpdateEvent,
 } from 'typeorm';
 
-import { UserEntity } from '../../modules/user/user.entity';
 import { UtilsService } from '../../providers/utils.service';
 
 @EventSubscriber()
-export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
+export class UserSubscriber implements EntitySubscriberInterface<TeacherEntity | StudentEntity> {
     listenTo() {
-        return UserEntity;
+        return TeacherEntity;
     }
-    beforeInsert(event: InsertEvent<UserEntity>) {
+    beforeInsert(event: InsertEvent<TeacherEntity | StudentEntity>) {
         if (event.entity.password) {
             event.entity.password = UtilsService.generateHash(
                 event.entity.password,
             );
         }
     }
-    beforeUpdate(event: UpdateEvent<UserEntity>) {
+    beforeUpdate(event: UpdateEvent<TeacherEntity | StudentEntity>) {
         if (event.entity.password !== event.databaseEntity.password) {
             event.entity.password = UtilsService.generateHash(
                 event.entity.password,

@@ -24,7 +24,7 @@ import { join } from 'path';
         from: '"No Reply" caochientp1@gmail.com',
       },
       template: {
-        dir: join(__dirname, 'templates'),
+        dir: join(__dirname, '/templates'),
         adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,
