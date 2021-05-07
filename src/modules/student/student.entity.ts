@@ -1,6 +1,7 @@
+import { CheckinEntity } from './../checkin/checkin.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from '../../common/constants/role-type';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { StudentDto } from './dto/StudentDto';
 
 @Entity({ name: 'student' })
@@ -25,6 +26,9 @@ export class StudentEntity extends AbstractEntity<StudentDto> {
 
     @Column({ nullable: true })
     class: string;
+
+    @OneToMany(() => CheckinEntity, checkinEntity => checkinEntity.student)
+    checkin: CheckinEntity[];
 
     dtoClass = StudentDto;
 }
