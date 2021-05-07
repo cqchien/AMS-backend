@@ -63,13 +63,13 @@ export class TeacherService {
             throw new RecordConflictException('Teacher is existed in database');
         }
         const password = UtilsService.generatePassword();
-        const hashPassword = UtilsService.generateHash(password);
-        const teacherEntity = await this.teacherRepository.create({
-            password: hashPassword,
+        const instance = this.teacherRepository.create({
             ...createTeacherDto,
+            password
         });
-        await this.mailerService.sendUserConfirmation(teacherEntity, password);
-        await this.teacherRepository.save(teacherEntity);
+        await this.mailerService.sendUserConfirmation(instance, password);
+
+        const teacherEntity = await this.teacherRepository.save(instance);
         return teacherEntity.toDto();
     }
 }
