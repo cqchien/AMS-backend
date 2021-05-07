@@ -26,7 +26,7 @@ import { CheckinModule } from './modules/checkin/checkin.module';
                 configService.typeOrmConfig,
             inject: [ConfigService],
         }),
-        MailModule,
+        // MailModule,
         ClassModule,
         CheckinModule,
     ],
