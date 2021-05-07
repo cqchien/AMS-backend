@@ -14,7 +14,7 @@ export class StudentDto extends AbstractDto {
     schoolYear: string;
 
     @ApiPropertyOptional({ nullable: true })
-    class: string;
+    mainClass: string;
 
     @ApiProperty()
     studentCode: string;
@@ -31,7 +31,7 @@ export class StudentDto extends AbstractDto {
         this.role = student.role;
         this.schoolYear = student.schoolYear;
         this.email = student.email;
-        this.class = student.class;
+        this.mainClass = student.class;
         this.studentCode = student.studentCode;
     }
 }
