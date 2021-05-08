@@ -50,7 +50,7 @@ export class AuthController {
     @ApiOkResponse({ description: 'Get current user' })
     getCurrentStudent(
         @AuthUser() user: StudentEntity | TeacherEntity,
-    ): Promise<StudentDto | TeacherDto> {
+    ): StudentDto | TeacherDto {
         if (!user) {
             throw new UserNotFoundException();
         }
