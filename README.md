@@ -14,8 +14,10 @@ Before start:
 - this project using node v12.16.3
 
 To setting up your environment, run below lines:
-- Run `make bootstrap` (for the first time setup)
-- Run `make up` to start docker container & start dev.
+- Run `docker-compose up -d` (for the first time setup)
+- Run `npm install`
+- RUN `yarn migration:run`
+- RUN `yarn start`
 - Happy coding :tada:
 
 To write new migrate
