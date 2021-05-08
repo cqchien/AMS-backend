@@ -20,11 +20,6 @@ To setting up your environment, run below lines:
 - RUN `yarn start`
 - Happy coding :tada:
 
-To write new migrate
-- Run `yarn migration:generate NewMigrationName` to create new migration file.
-- Run `make db-migrate` to run all migration.
-- Run `make db-revert` to revert 1 version right before.
-
 ### 2. Coding Guideline
 
 We follow the structure of Nestjs boilerplate   
