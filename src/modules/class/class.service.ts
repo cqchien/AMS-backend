@@ -28,6 +28,10 @@ export class ClassService {
         pageOptionDto: PageOptionsDto,
     ): Promise<PageDto<ClassDto>> {
         let queryBuilder = this.classRepository.createQueryBuilder('class');
+        queryBuilder = queryBuilder.leftJoinAndSelect(
+            'class.teacher',
+            'teacher',
+        );
         if (pageOptionDto.q) {
             queryBuilder = queryBuilder.searchByString(pageOptionDto.q, [
                 'course_code',
@@ -52,10 +56,9 @@ export class ClassService {
         teacherId: string,
     ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
-        const classesByTeacher = queryBuilder.where(
-            'class.teacher_id = :teacherId',
-            { teacherId },
-        );
+        const classesByTeacher = queryBuilder
+            .leftJoinAndSelect('class.teacher', 'teacher')
+            .andWhere('teacher.id = :teacherId', { teacherId });
         const { items, pageMetaDto } = await classesByTeacher.paginate(
             pageOptionDto,
         );
@@ -75,6 +78,7 @@ export class ClassService {
     ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
         const classesByStudent = queryBuilder
+            .leftJoinAndSelect('class.teacher', 'teacher')
             .leftJoinAndSelect('class.checkin', 'checkin')
             .leftJoinAndSelect('checkin.student', 'student')
             .andWhere('student.id = :studentId', { studentId });

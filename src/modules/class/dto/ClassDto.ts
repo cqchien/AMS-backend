@@ -28,8 +28,8 @@ export class ClassDto extends AbstractDto {
     @ApiProperty()
     qrCode: string;
 
-    @ApiProperty({type: TeacherDto})
-    teacher: TeacherDto;
+    @ApiProperty({ type: TeacherDto })
+    teacher: TeacherDto | any;
 
     constructor(classEntity: ClassEntity) {
         super(classEntity);
@@ -40,6 +40,6 @@ export class ClassDto extends AbstractDto {
         this.startTime = classEntity.startTime;
         this.endTime = classEntity.endTime;
         this.qrCode = classEntity.qrCode;
-        this.teacher = classEntity.teacher.toDto();
+        this.teacher = classEntity.teacher ? classEntity.teacher.toDto() : '';
     }
 }
