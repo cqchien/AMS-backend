@@ -132,9 +132,9 @@ export class ClassService {
             teacher = await this.teacherService.findOne({
                 id: teacherId,
             });
-        }
-        if (!teacher) {
-            throw new UserNotFoundException();
+            if (!teacher) {
+                throw new UserNotFoundException('Teacher not found');
+            }
         }
 
         // Check the time is valid or not (end time is greater than start time)
@@ -160,6 +160,15 @@ export class ClassService {
             teacher,
         });
         await this.classRepository.save(classEntity);
-        return new ClassDto(classEntity, teacher.toDto());
+        classEntity.teacher = teacher;
+        return classEntity.toDto();
+    }
+
+    async getOneClass(classId: string): Promise<ClassDto> {
+        const classEntity = await this.classRepository.findOne(
+            { id: classId },
+            { relations: ['teacher'] },
+        );
+        return classEntity.toDto();
     }
 }
