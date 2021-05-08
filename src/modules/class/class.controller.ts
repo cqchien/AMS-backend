@@ -19,7 +19,7 @@ import {
     ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from '../../decorators/http.decorators';
+import { Auth, UUIDParam } from '../../decorators/http.decorators';
 import { RoleType } from '../../common/constants/role-type';
 
 @Controller('class')
@@ -52,5 +52,18 @@ export class ClassController {
         pageOptionDto: PageOptionsDto,
     ): Promise<PageDto<ClassDto>> {
         return this.classService.getClasses(user, pageOptionDto);
+    }
+
+    @Get(':id')
+    @UseGuards(AuthGuard())
+    @UseInterceptors(AuthUserInterceptor)
+    @ApiBearerAuth()
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Get detail one class',
+        type: ClassDto,
+    })
+    getOneClass(@UUIDParam('id') classId: string): Promise<ClassDto> {
+        return this.classService.getOneClass(classId);
     }
 }
