@@ -6,7 +6,7 @@ import { FindConditions } from 'typeorm';
 import { TeacherRepository } from './teacher.repository';
 import { Injectable } from '@nestjs/common';
 import { TeacherEntity } from './teacher.entity';
-import { MailService } from '../../mail/mail.service';
+import { MailService } from './mail.service';
 
 @Injectable()
 export class TeacherService {
@@ -67,7 +67,7 @@ export class TeacherService {
             ...createTeacherDto,
             password
         });
-        await this.mailerService.sendUserConfirmation(instance, password);
+        await this.mailerService.sendTeacherPassword(instance, password);
 
         const teacherEntity = await this.teacherRepository.save(instance);
         return teacherEntity.toDto();
