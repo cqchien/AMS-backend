@@ -40,7 +40,7 @@ export class AuthController {
         const userEntity = await this.authService.validateUser(userLoginDto);
 
         const token = await this.authService.createToken(userEntity);
-        return new LoginPayloadDto(token);
+        return new LoginPayloadDto(token, userEntity.role);
     }
 
     @Get('me')
