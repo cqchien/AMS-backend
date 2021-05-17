@@ -1,3 +1,4 @@
+import { CheckinService } from './../checkin/checkin.service';
 import { StudentEntity } from './../student/student.entity';
 import { PageDto } from './../../common/dto/PageDto';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
@@ -17,6 +18,7 @@ export class ClassService {
     constructor(
         public readonly classRepository: ClassRepository,
         public teacherService: TeacherService,
+        public checkinService: CheckinService,
     ) {}
 
     /**
@@ -98,12 +100,24 @@ export class ClassService {
     async getClasses(
         user: StudentEntity | TeacherEntity,
         pageOptionDto: PageOptionsDto,
-    ): Promise<PageDto<ClassDto>> {
+    ): Promise<PageDto<ClassDto> | any> {
         const { role } = user;
         if (role === RoleType.TEACHER) {
             return this.getClassesByTeacher(pageOptionDto, user.id);
         } else if (role == RoleType.STUDENT) {
-            return this.getClassesByStudent(pageOptionDto, user.id);
+            const classes = await this.getClassesByStudent(
+                pageOptionDto,
+                user.id,
+            );
+            const data = [];
+            for (const classDto of classes.data) {
+                const timesCheckin = await this.checkinService.getCheckinTimesStudents(
+                    classDto.id,
+                    user.id,
+                );
+                data.push({ ...classDto, timesCheckin });
+            }
+            return { ...data, ...classes.meta };
         } else {
             return this.getAllClasses(pageOptionDto);
         }
