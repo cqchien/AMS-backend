@@ -49,9 +49,9 @@ export class ClassController {
     })
     getClasses(@AuthUser() user: StudentEntity | TeacherEntity, 
         @Query(new ValidationPipe({ transform: true }))
-        pageOptionDto: PageOptionsDto,
+        pageOptionDto: PageOptionsDto, @Query('isFinish') isFinish: boolean,
     ): Promise<PageDto<ClassDto>> {
-        return this.classService.getClasses(user, pageOptionDto);
+        return this.classService.getClasses(user, pageOptionDto, isFinish);
     }
 
     @Get(':id')
