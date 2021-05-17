@@ -1,3 +1,4 @@
+import { CheckinModule } from './../checkin/checkin.module';
 import { PassportModule } from '@nestjs/passport';
 import { TeacherModule } from './../teacher/teacher.module';
 import { ClassRepository } from './class.repository';
@@ -11,6 +12,7 @@ import { ClassController } from './class.controller';
         TypeOrmModule.forFeature([ClassRepository]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
         TeacherModule,
+        CheckinModule
     ],
     exports: [
         ClassService,
