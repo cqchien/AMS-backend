@@ -77,6 +77,7 @@ export class ClassService {
     async getClassesByStudent(
         pageOptionDto: PageOptionsDto,
         studentId: string,
+        isFinish: boolean,
     ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
         const classesByStudent = queryBuilder
@@ -84,6 +85,10 @@ export class ClassService {
             .leftJoinAndSelect('class.checkin', 'checkin')
             .leftJoinAndSelect('checkin.student', 'student')
             .andWhere('student.id = :studentId', { studentId });
+
+        if (isFinish) {
+            queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
+        }
         const { items, pageMetaDto } = await classesByStudent.paginate(
             pageOptionDto,
         );
@@ -100,6 +105,7 @@ export class ClassService {
     async getClasses(
         user: StudentEntity | TeacherEntity,
         pageOptionDto: PageOptionsDto,
+        isFinish: boolean,
     ): Promise<PageDto<ClassDto> | any> {
         const { role } = user;
         if (role === RoleType.TEACHER) {
@@ -108,12 +114,14 @@ export class ClassService {
             const classes = await this.getClassesByStudent(
                 pageOptionDto,
                 user.id,
+                isFinish,
             );
             const data = [];
             for (const classDto of classes.data) {
                 const timesCheckin = await this.checkinService.getCheckinTimesStudents(
                     classDto.id,
                     user.id,
+                    isFinish
                 );
                 data.push({ ...classDto, timesCheckin });
             }
