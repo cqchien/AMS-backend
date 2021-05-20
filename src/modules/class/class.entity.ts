@@ -28,6 +28,9 @@ export class ClassEntity extends AbstractEntity<ClassDto> {
     @Column()
     qrCode: string;
 
+    @Column({name: 'isFinish'})
+    isFinish: boolean;
+
     @ManyToOne(() => TeacherEntity, (teacher) => teacher.classes)
     @JoinColumn({ name: 'teacher_id' })
     teacher: TeacherEntity;
