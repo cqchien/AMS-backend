@@ -125,7 +125,7 @@ export class ClassService {
                 );
                 data.push({ ...classDto, timesCheckin });
             }
-            return { ...data, ...classes.meta };
+            return {data, ...classes.meta};
         } else {
             return this.getAllClasses(pageOptionDto);
         }
