@@ -86,9 +86,7 @@ export class ClassService {
             .leftJoinAndSelect('checkin.student', 'student')
             .andWhere('student.id = :studentId', { studentId });
 
-        if (isFinish) {
-            queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
-        }
+        queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
         const { items, pageMetaDto } = await classesByStudent.paginate(
             pageOptionDto,
         );
@@ -121,11 +119,11 @@ export class ClassService {
                 const timesCheckin = await this.checkinService.getCheckinTimesStudents(
                     classDto.id,
                     user.id,
-                    isFinish
+                    isFinish,
                 );
                 data.push({ ...classDto, timesCheckin });
             }
-            return {data, ...classes.meta};
+            return { data, ...classes.meta };
         } else {
             return this.getAllClasses(pageOptionDto);
         }
