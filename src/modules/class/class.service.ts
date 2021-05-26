@@ -193,6 +193,9 @@ export class ClassService {
             { id: classId },
             { relations: ['teacher'] },
         );
+        if(!classEntity) {
+            throw new UserNotFoundException('Class is not exist')
+        }
         return classEntity.toDto();
     }
 }
