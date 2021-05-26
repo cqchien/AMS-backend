@@ -28,7 +28,7 @@ export class ClassController {
     constructor(private classService: ClassService) {}
 
     @Post()
-    @Auth(RoleType.ADMIN, RoleType.TRAININGROOM)
+    @Auth(RoleType.ADMIN)
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Admin and Training room can create new class',
@@ -66,4 +66,6 @@ export class ClassController {
     getOneClass(@UUIDParam('id') classId: string): Promise<ClassDto> {
         return this.classService.getOneClass(classId);
     }
+
+    
 }
