@@ -67,5 +67,13 @@ export class ClassController {
         return this.classService.getOneClass(classId);
     }
 
-    
+    @Post('/:id/qrcode')
+    @Auth(RoleType.ADMIN, RoleType.TEACHER)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Generate Qr code',
+    })
+    createQrcode(@UUIDParam('id') classId: string): Promise<any> {
+        return this.classService.createQrCode(classId);
+    }
 }

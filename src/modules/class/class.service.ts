@@ -1,3 +1,4 @@
+import { UtilsService } from './../../providers/utils.service';
 import { CheckinService } from './../checkin/checkin.service';
 import { StudentEntity } from './../student/student.entity';
 import { PageDto } from './../../common/dto/PageDto';
@@ -12,7 +13,8 @@ import { CreateClassDto } from './dto/createClassDto';
 import { ClassRepository } from './class.repository';
 import { Injectable } from '@nestjs/common';
 import { RoleType } from '../../common/constants/role-type';
-
+import QRcode = require('qrcode');
+import { join } from 'path';
 @Injectable()
 export class ClassService {
     constructor(
@@ -193,9 +195,34 @@ export class ClassService {
             { id: classId },
             { relations: ['teacher'] },
         );
-        if(!classEntity) {
-            throw new UserNotFoundException('Class is not exist')
+        if (!classEntity) {
+            throw new UserNotFoundException('Class is not exist');
         }
         return classEntity.toDto();
+    }
+
+    /**
+     * 
+     * @param courseCode 
+     * @param classId 
+     * @returns pathQR
+     */
+    async generateQR(courseCode: string, classId: string): Promise<string> {
+        const key = UtilsService.generateRandomString(5) + '_' + courseCode;
+        const fileName = classId + '_' + key;
+        const path = `upload/QRCode/${fileName}.png`;
+        await QRcode.toFile(path, key);
+        return path
+    }
+
+    /**
+     * 
+     * @param classId 
+     * @returns 
+     */
+    async createQrCode(classId: string): Promise<any> {
+        const classEntity = await this.getOneClass(classId);
+        const pathQR = this.generateQR(classEntity.courseCode, classEntity.id);
+        return pathQR;
     }
 }
