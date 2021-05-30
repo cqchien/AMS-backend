@@ -5,7 +5,7 @@ export class AlterTableClassAddFieldExpireIn1622020160693 implements MigrationIn
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "class"
-        ADD "expire_in" numeric NULL;
+        ADD "qr_create_at" timestamp NULL;
         COMMENT ON TABLE "class" IS '';`);
         
     }

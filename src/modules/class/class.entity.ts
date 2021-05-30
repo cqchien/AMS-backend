@@ -31,8 +31,8 @@ export class ClassEntity extends AbstractEntity<ClassDto> {
     @Column({name: 'isFinish'})
     isFinish: boolean;
 
-    @Column({name: 'expire_in'})
-    expireInQrCode: number;
+    @Column({name: 'qr_create_at'})
+    QRCreatedAt: Date;
 
     @ManyToOne(() => TeacherEntity, (teacher) => teacher.classes)
     @JoinColumn({ name: 'teacher_id' })
