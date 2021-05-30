@@ -14,6 +14,7 @@ import { ClassRepository } from './class.repository';
 import { Injectable } from '@nestjs/common';
 import { RoleType } from '../../common/constants/role-type';
 import QRcode from 'qrcode';
+import fs from 'fs';
 @Injectable()
 export class ClassService {
     constructor(
@@ -230,6 +231,14 @@ export class ClassService {
      */
     async createQrCode(classId: string): Promise<any> {
         let classEntity = await this.getOneClass(classId);
+        if (classEntity.qrCode) {
+            const path = `src/assets/${classEntity.qrCode}`;
+            try {
+                fs.unlinkSync(path);
+            } catch (error) {
+                throw new UserNotFoundException('File is not found.');
+            }
+        }
         const pathQR = await this.generateQR(
             classEntity.courseCode,
             classEntity.id,
