@@ -10,7 +10,7 @@ import { TeacherService } from './../teacher/teacher.service';
 import { DateTimeNotAcceptableException } from './../../exceptions/datetime-not-acceptable.exception';
 import { RecordConflictException } from './../../exceptions/record-conflict.exception';
 import { ClassDto } from './dto/ClassDto';
-import { CreateClassDto } from './dto/createClassDto';
+import { CreateClassDto } from './dto/ClassDtoPayload';
 import { ClassRepository } from './class.repository';
 import { Injectable } from '@nestjs/common';
 import { RoleType } from '../../common/constants/role-type';

@@ -6,7 +6,7 @@ import { UseInterceptors, UseGuards, Put, Patch } from '@nestjs/common';
 import { AuthUserInterceptor } from './../../interceptors/auth-user-interceptor.service';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { PageDto } from './../../common/dto/PageDto';
-import { CreateClassDto } from './dto/createClassDto';
+import { CreateClassDto } from './dto/ClassDtoPayload';
 import { ClassDto } from './dto/ClassDto';
 import { ClassService } from './class.service';
 import {

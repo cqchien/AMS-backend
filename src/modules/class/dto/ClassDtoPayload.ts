@@ -2,7 +2,7 @@
 
 import { IsDate, IsEnum, IsString } from 'class-validator';
 
-import { ClassType } from './../../../common/constants/class-type';
+import { ClassType } from '../../../common/constants/class-type';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateClassDto {
