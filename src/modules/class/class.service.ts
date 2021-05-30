@@ -1,3 +1,4 @@
+import { ClassEntity } from './class.entity';
 import { UtilsService } from './../../providers/utils.service';
 import { CheckinService } from './../checkin/checkin.service';
 import { StudentEntity } from './../student/student.entity';
@@ -201,10 +202,19 @@ export class ClassService {
         return classEntity.toDto();
     }
 
+    async updateOneClass(
+        classId: string,
+        updateClassDto: CreateClassDto,
+    ): Promise<ClassDto> {
+        const classEntity = this.classRepository.create(updateClassDto);
+        await this.classRepository.save(classEntity);
+        return classEntity.toDto();
+    }
+
     /**
-     * 
-     * @param courseCode 
-     * @param classId 
+     *
+     * @param courseCode
+     * @param classId
      * @returns pathQR
      */
     async generateQR(courseCode: string, classId: string): Promise<string> {
@@ -212,17 +222,28 @@ export class ClassService {
         const fileName = classId + '_' + key;
         const path = `upload/QRCode/${fileName}.png`;
         await QRcode.toFile(path, key);
-        return path
+        return path;
     }
 
     /**
-     * 
-     * @param classId 
-     * @returns 
+     *
+     * @param classId
+     * @returns
      */
     async createQrCode(classId: string): Promise<any> {
-        const classEntity = await this.getOneClass(classId);
-        const pathQR = this.generateQR(classEntity.courseCode, classEntity.id);
-        return pathQR;
+        let classEntity = await this.getOneClass(classId);
+        const pathQR = await this.generateQR(
+            classEntity.courseCode,
+            classEntity.id,
+        );
+        classEntity = {
+            ...classEntity,
+            qrCode: pathQR,
+            QRCreatedAt: new Date(),
+        };
+        await this.classRepository.save({
+            ...classEntity,
+        });
+        return classEntity;
     }
 }

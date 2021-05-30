@@ -2,7 +2,7 @@ import { TeacherEntity } from './../teacher/teacher.entity';
 import { StudentEntity } from './../student/student.entity';
 import { AuthUser } from './../../decorators/auth-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { UseInterceptors, UseGuards } from '@nestjs/common';
+import { UseInterceptors, UseGuards, Put, Patch } from '@nestjs/common';
 import { AuthUserInterceptor } from './../../interceptors/auth-user-interceptor.service';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { PageDto } from './../../common/dto/PageDto';
@@ -67,7 +67,7 @@ export class ClassController {
         return this.classService.getOneClass(classId);
     }
 
-    @Post('/:id/qrcode')
+    @Patch('/:id/qrcode')
     @Auth(RoleType.ADMIN, RoleType.TEACHER)
     @ApiResponse({
         status: HttpStatus.OK,
