@@ -2,11 +2,11 @@ import { TeacherEntity } from './../teacher/teacher.entity';
 import { StudentEntity } from './../student/student.entity';
 import { AuthUser } from './../../decorators/auth-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { UseInterceptors, UseGuards, Put, Patch } from '@nestjs/common';
+import { UseInterceptors, UseGuards, Patch } from '@nestjs/common';
 import { AuthUserInterceptor } from './../../interceptors/auth-user-interceptor.service';
 import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { PageDto } from './../../common/dto/PageDto';
-import { CreateClassDto } from './dto/ClassDtoPayload';
+import { CreateClassDto } from './dto/ClassPayloadDto';
 import { ClassDto } from './dto/ClassDto';
 import { ClassService } from './class.service';
 import {
