@@ -1,3 +1,4 @@
+import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
 import { FindConditions } from 'typeorm';
 import { StudentRepository } from './student.repository';
 import { Injectable } from '@nestjs/common';
@@ -10,7 +11,13 @@ export class StudentService {
     /**
      * Find single user
      */
-    findOne(findData: FindConditions<StudentEntity>): Promise<StudentEntity> {
-        return this.studentRepository.findOne(findData);
+    async getOneStudent(studentId: string): Promise<StudentEntity> {
+        const studentEntity = await this.studentRepository.findOne({
+            id: studentId,
+        });
+        if (!studentEntity) {
+            throw new UserNotFoundException('Student is not found');
+        }
+        return studentEntity;
     }
 }
