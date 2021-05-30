@@ -1,4 +1,3 @@
-import { ClassEntity } from './class.entity';
 import { UtilsService } from './../../providers/utils.service';
 import { CheckinService } from './../checkin/checkin.service';
 import { StudentEntity } from './../student/student.entity';
@@ -14,8 +13,7 @@ import { CreateClassDto } from './dto/ClassDtoPayload';
 import { ClassRepository } from './class.repository';
 import { Injectable } from '@nestjs/common';
 import { RoleType } from '../../common/constants/role-type';
-import QRcode = require('qrcode');
-import { join } from 'path';
+import QRcode from 'qrcode';
 @Injectable()
 export class ClassService {
     constructor(
