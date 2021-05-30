@@ -25,6 +25,8 @@ import { QueryFailedFilter } from './filters/query-failed.filter';
 import { setupSwagger } from './setup-swagger';
 import { ConfigService } from './shared/services/config.service';
 import { SharedModule } from './shared/shared.module';
+import * as express from 'express';
+import { join } from 'path';
 
 export async function bootstrap(): Promise<NestExpressApplication> {
     initializeTransactionalContext();
@@ -36,6 +38,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     );
     app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
     app.use(helmet());
+    app.use(express.static(join(__dirname + '/assets')));
     app.use(
         RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes

@@ -218,9 +218,9 @@ export class ClassService {
     async generateQR(courseCode: string, classId: string): Promise<string> {
         const key = UtilsService.generateRandomString(5) + '_' + courseCode;
         const fileName = classId + '_' + key;
-        const path = `upload/QRCode/${fileName}.png`;
+        const path = `src/assets/qrcode/${fileName}.png`;
         await QRcode.toFile(path, key);
-        return path;
+        return `qrcode/${fileName}.png`;
     }
 
     /**
@@ -242,6 +242,6 @@ export class ClassService {
         await this.classRepository.save({
             ...classEntity,
         });
-        return classEntity;
+        return { pathQR };
     }
 }
