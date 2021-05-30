@@ -16,8 +16,8 @@ export class CheckinDto extends AbstractDto {
 
     constructor(checkinEntity: CheckinEntity) {
         super(checkinEntity);
-        this.student = checkinEntity.student;
-        this.courseClass = checkinEntity.class;
+        this.student = checkinEntity.student ? checkinEntity.student : null;
+        this.courseClass = checkinEntity.class ? checkinEntity.class : null;
         this.time = checkinEntity.createdAt;
     }
 }

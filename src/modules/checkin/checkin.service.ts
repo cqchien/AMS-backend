@@ -1,9 +1,16 @@
+import { ClassService } from './../class/class.service';
+import { StudentService } from './../student/student.service';
+import { CheckinPayloadDto } from './dto/checkinPayload';
 import { CheckinRepository } from './checkin.repository';
 import { Injectable } from '@nestjs/common';
+import { CheckinDto } from './dto/checkinDto';
 
 @Injectable()
 export class CheckinService {
-    constructor(public checkinRepository: CheckinRepository) {}
+    constructor(public checkinRepository: CheckinRepository,
+        public studentService: StudentService,
+        public classService: ClassService,
+        ) {}
     /**
      *
      * @param classId
@@ -28,5 +35,12 @@ export class CheckinService {
         queryBuilder.andWhere('checkin.student_id = :studentId', { studentId });
         const timesCheckin = await queryBuilder.getCount();
         return `${timesCheckin}/${timesClassActive}`;
+    }
+
+    async checkin(createCheckinDto: CheckinPayloadDto): Promise<CheckinDto> {
+        const {classId, studentId} = createCheckinDto;
+        const classDto = await this.classService.getOneClass(classId);
+        const studentDto = await this.studentService.findOne(studentId);
+        
     }
 }

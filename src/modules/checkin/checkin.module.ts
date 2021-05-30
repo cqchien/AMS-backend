@@ -1,4 +1,5 @@
-import { StudentModule } from './../student/student.module';
+import { StudentService } from './../student/student.service';
+import { ClassService } from './../class/class.service';
 import { CheckinRepository } from './checkin.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CheckinService } from './checkin.service';
@@ -9,6 +10,6 @@ import { Module } from '@nestjs/common';
     imports: [TypeOrmModule.forFeature([CheckinRepository])],
     exports: [CheckinService],
     controllers: [CheckinController],
-    providers: [CheckinService],
+    providers: [CheckinService, ClassService, StudentService],
 })
 export class CheckinModule {}
