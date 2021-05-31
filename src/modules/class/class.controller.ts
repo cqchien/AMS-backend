@@ -34,8 +34,9 @@ export class ClassController {
         description: 'Admin and Training room can create new class',
         type: ClassDto,
     })
-    createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
-        return this.classService.createClass(createClassDto);
+    async createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
+        const classEntity = await this.classService.createClass(createClassDto);
+        return classEntity.toDto();
     }
 
     @Get()
@@ -63,8 +64,9 @@ export class ClassController {
         description: 'Get detail one class',
         type: ClassDto,
     })
-    getOneClass(@UUIDParam('id') classId: string): Promise<ClassDto> {
-        return this.classService.getOneClass(classId);
+    async getOneClass(@UUIDParam('id') classId: string): Promise<ClassDto> {
+        const classEntity = await this.classService.getOneClass(classId);
+        return classEntity.toDto();
     }
 
     @Patch('/:id/qrcode')

@@ -1,3 +1,4 @@
+import { ClassEntity } from './class.entity';
 import { UtilsService } from './../../providers/utils.service';
 import { CheckinService } from './../checkin/checkin.service';
 import { StudentEntity } from './../student/student.entity';
@@ -135,7 +136,7 @@ export class ClassService {
      * @param createClassDto
      * @returns classDto
      */
-    async createClass(createClassDto: CreateClassDto): Promise<ClassDto> {
+    async createClass(createClassDto: CreateClassDto): Promise<ClassEntity> {
         const {
             courseCode,
             startTime,
@@ -187,10 +188,10 @@ export class ClassService {
         });
         await this.classRepository.save(classEntity);
         classEntity.teacher = teacher;
-        return classEntity.toDto();
+        return classEntity;
     }
 
-    async getOneClass(classId: string): Promise<ClassDto> {
+    async getOneClass(classId: string): Promise<ClassEntity> {
         const classEntity = await this.classRepository.findOne(
             { id: classId },
             { relations: ['teacher'] },
@@ -198,7 +199,7 @@ export class ClassService {
         if (!classEntity) {
             throw new UserNotFoundException('Class is not exist');
         }
-        return classEntity.toDto();
+        return classEntity;
     }
 
     async updateOneClass(
@@ -243,13 +244,13 @@ export class ClassService {
             classEntity.courseCode,
             classEntity.id,
         );
-        classEntity = {
+        const classEntityPayload = {
             ...classEntity,
             qrCode: pathQR,
             QRCreatedAt: new Date(),
         };
         await this.classRepository.save({
-            ...classEntity,
+            ...classEntityPayload,
         });
         return { pathQR };
     }
