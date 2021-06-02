@@ -49,7 +49,7 @@ export class CheckinService {
         const date = new Date();
         const QRCreatedDate = new Date(classEntity.QRCreatedAt);
         const constraintDate = date.getTime() - QRCreatedDate.getTime();
-        if (classEntity.qrCode !== pathQR || constraintDate > 3600000 * 5) {
+        if (classEntity.qrCode !== pathQR || constraintDate > 3600000 * 100000) {
             throw new UserNotFoundException('QRCode is invalid');
         }
         const payload = {
