@@ -41,7 +41,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     app.use(helmet());
     // At the top of your web.js
     // app.use(express.static(join(__dirname + '/assets')));
-    app.use(express.static(join(process.env.PWD + '/assets')));
+    app.use(express.static(join(process.env.PWD + 'assets')));
     app.use(
         RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
