@@ -39,7 +39,7 @@ export class AuthService {
         const service =
             isMobileApp === false ? this.teacherService : this.studentService;
 
-        const user = await service.findOne({ email });
+        const user = await service.findByEmailOrCode({ email });
 
         const isPasswordValid = await UtilsService.validateHash(
             password,

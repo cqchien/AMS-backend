@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             role === RoleType.STUDENT
                 ? this.studentService
                 : this.teacherService;
-        const user = await service.findOne({ id });
+        const user = await service.getOne(id);
 
         if (!user) {
             throw new UnauthorizedException();
