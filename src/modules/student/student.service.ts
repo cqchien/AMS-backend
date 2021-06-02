@@ -11,7 +11,7 @@ export class StudentService {
     /**
      * Find single user
      */
-    async getOneStudent(studentId: string): Promise<StudentEntity> {
+    async getOne(studentId: string): Promise<StudentEntity> {
         const studentEntity = await this.studentRepository.findOne({
             id: studentId,
         });
@@ -20,4 +20,29 @@ export class StudentService {
         }
         return studentEntity;
     }
+
+        /**
+     * Find Student By Email or StudentCode
+     * @param options
+     * @returns StudentEntity | undefined
+     */
+         async findByEmailOrCode(
+            options: Partial<{ studentCode: string; email: string }>,
+        ): Promise<StudentEntity | undefined> {
+            const queryBuilder = this.studentRepository.createQueryBuilder(
+                'student',
+            );
+            if (options.email) {
+                queryBuilder.orWhere('student.email = :email', {
+                    email: options.email,
+                });
+            }
+            if (options.studentCode) {
+                queryBuilder.orWhere('student.student_code = :studentCode', {
+                    studentCode: options.studentCode,
+                });
+            }
+    
+            return queryBuilder.getOne();
+        }
 }

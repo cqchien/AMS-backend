@@ -1,3 +1,4 @@
+import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
 import { RecordConflictException } from './../../exceptions/record-conflict.exception';
 import { CreateTeacherDto } from './dto/createTeacherDto';
 import { UtilsService } from './../../providers/utils.service';
@@ -18,15 +19,21 @@ export class TeacherService {
     /**
      * Find single user
      */
-    findOne(findData: FindConditions<TeacherEntity>): Promise<TeacherEntity> {
-        return this.teacherRepository.findOne(findData);
+    async getOne(teacherId: string): Promise<TeacherEntity> {
+        const teacherEntity = await this.teacherRepository.findOne({
+            id: teacherId,
+        });
+        if (!teacherEntity) {
+            throw new UserNotFoundException('Teacher is not found');
+        }
+        return teacherEntity;
     }
     /**
      * Find Teacher By Email or TeacherCode
      * @param options
      * @returns TeacherEntity | undefined
      */
-    async findByEmailOrTeacherCode(
+    async findByEmailOrCode(
         options: Partial<{ teacherCode: string; email: string }>,
     ): Promise<TeacherEntity | undefined> {
         const queryBuilder = this.teacherRepository.createQueryBuilder(
@@ -55,7 +62,7 @@ export class TeacherService {
         createTeacherDto: CreateTeacherDto,
     ): Promise<TeacherDto> {
         const { email, teacherCode } = createTeacherDto;
-        const existTeacher = await this.findByEmailOrTeacherCode({
+        const existTeacher = await this.findByEmailOrCode({
             teacherCode,
             email,
         });
@@ -65,7 +72,7 @@ export class TeacherService {
         const password = UtilsService.generatePassword();
         const instance = this.teacherRepository.create({
             ...createTeacherDto,
-            password
+            password,
         });
         await this.mailerService.sendTeacherPassword(instance, password);
 

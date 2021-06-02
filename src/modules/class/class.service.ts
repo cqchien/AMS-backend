@@ -12,7 +12,7 @@ import { RecordConflictException } from './../../exceptions/record-conflict.exce
 import { ClassDto } from './dto/ClassDto';
 import { CreateClassDto } from './dto/ClassPayloadDto';
 import { ClassRepository } from './class.repository';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { RoleType } from '../../common/constants/role-type';
 import QRcode from 'qrcode';
 import fs from 'fs';
@@ -21,6 +21,7 @@ export class ClassService {
     constructor(
         public readonly classRepository: ClassRepository,
         public teacherService: TeacherService,
+        @Inject(forwardRef(() => CheckinService))
         public checkinService: CheckinService,
     ) {}
 
@@ -156,9 +157,7 @@ export class ClassService {
         // If user send teacherId, check teacher is exist or not
         let teacher: TeacherEntity;
         if (teacherId) {
-            teacher = await this.teacherService.findOne({
-                id: teacherId,
-            });
+            teacher = await this.teacherService.getOne(teacherId);
             if (!teacher) {
                 throw new UserNotFoundException('Teacher not found');
             }
@@ -191,7 +190,7 @@ export class ClassService {
         return classEntity;
     }
 
-    async getOneClass(classId: string): Promise<ClassEntity> {
+    async getOne(classId: string): Promise<ClassEntity> {
         const classEntity = await this.classRepository.findOne(
             { id: classId },
             { relations: ['teacher'] },
@@ -231,7 +230,7 @@ export class ClassService {
      * @returns
      */
     async createQrCode(classId: string): Promise<any> {
-        let classEntity = await this.getOneClass(classId);
+        let classEntity = await this.getOne(classId);
         if (classEntity.qrCode) {
             const path = `src/assets/${classEntity.qrCode}`;
             try {
