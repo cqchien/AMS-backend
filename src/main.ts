@@ -40,8 +40,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
     app.use(helmet());
     // At the top of your web.js
-    // app.use(express.static(join(__dirname + '/assets')));
-    app.use(express.static(join(process.env.PWD + 'assets')));
+    app.use(express.static(join(__dirname + '/assets')));
+    // app.use(express.static(join(process.env.PWD + 'assets')));
     app.use(
         RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
