@@ -5,7 +5,7 @@
     "author": "Narek Hakobyan <narek.hakobyan.07@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "build": "tsc -p tsconfig.build.json",
+        "build": "tsc -p tsconfig.build.json && npm run copy:assets",
         "postbuild:prod": "copyfiles --up 1 src/**/*.json dist",
         "start:hmr": "node dist/src/main.hmr.ts",
         "tsc": "tsc",
@@ -30,7 +30,8 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "docs:dev": "vuepress dev -p 7070",
         "docs:build": "DEPLOY_ENV=gh-pages vuepress build",
-        "docs:deploy": "yarn docs:build && gh-pages -d .vuepress/dist"
+        "docs:deploy": "yarn docs:build && gh-pages -d .vuepress/dist",
+        "copy:assets": "cpx 'src/assets/qrcode/**' 'dist/src/assets/qrcode'"
     },
     "dependencies": {
         "@nestjs-modules/mailer": "^1.6.0",
