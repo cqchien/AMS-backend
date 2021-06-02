@@ -12,4 +12,8 @@ export class CheckinPayloadDto {
     @IsString()
     @ApiPropertyOptional()
     studentId: string;
+
+    @IsString()
+    @ApiPropertyOptional()
+    qrcode: string;
 }

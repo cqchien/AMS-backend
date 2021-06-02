@@ -26,7 +26,12 @@ export class CheckinController {
         description: 'Checkin By qrcode',
         type: CheckinDto,
     })
-    checkin(@Body() createCheckinDto: CheckinPayloadDto): Promise<CheckinDto> {
-        return this.checkinService.checkin(createCheckinDto);
+    async checkin(
+        @Body() createCheckinDto: CheckinPayloadDto,
+    ): Promise<CheckinDto> {
+        const checkinEntity = await this.checkinService.checkin(
+            createCheckinDto,
+        );
+        return checkinEntity.toDto();
     }
 }

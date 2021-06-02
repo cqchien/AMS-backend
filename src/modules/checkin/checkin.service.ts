@@ -1,16 +1,17 @@
+import { CheckinEntity } from './checkin.entity';
 import { ClassService } from './../class/class.service';
 import { StudentService } from './../student/student.service';
 import { CheckinPayloadDto } from './dto/checkinPayload';
 import { CheckinRepository } from './checkin.repository';
 import { Injectable } from '@nestjs/common';
-import { CheckinDto } from './dto/checkinDto';
 
 @Injectable()
 export class CheckinService {
-    constructor(public checkinRepository: CheckinRepository,
+    constructor(
+        public readonly checkinRepository: CheckinRepository,
         public studentService: StudentService,
         public classService: ClassService,
-        ) {}
+    ) {}
     /**
      *
      * @param classId
@@ -37,10 +38,16 @@ export class CheckinService {
         return `${timesCheckin}/${timesClassActive}`;
     }
 
-    async checkin(createCheckinDto: CheckinPayloadDto): Promise<CheckinDto> {
-        const {classId, studentId} = createCheckinDto;
-        const classDto = await this.classService.getOneClass(classId);
-        const studentDto = await this.studentService.findOne(studentId);
-        
+    async checkin(createCheckinDto: CheckinPayloadDto): Promise<CheckinEntity> {
+        const { classId, studentId, qrcode } = createCheckinDto;
+        const classEntity = await this.classService.getOne(classId);
+        const studentEntity = await this.studentService.getOne(studentId);
+        const payload = {
+            class: classEntity,
+            student: studentEntity,
+        };
+
+        const checkinEntity = this.checkinRepository.create(payload);
+        return this.checkinRepository.save(checkinEntity);
     }
 }
