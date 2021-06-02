@@ -65,7 +65,7 @@ export class ClassController {
         type: ClassDto,
     })
     async getOneClass(@UUIDParam('id') classId: string): Promise<ClassDto> {
-        const classEntity = await this.classService.getOneClass(classId);
+        const classEntity = await this.classService.getOne(classId);
         return classEntity.toDto();
     }
 
@@ -74,6 +74,7 @@ export class ClassController {
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Generate Qr code',
+        type: String,
     })
     createQrcode(@UUIDParam('id') classId: string): Promise<any> {
         return this.classService.createQrCode(classId);

@@ -11,14 +11,14 @@ import { ClassController } from './class.controller';
     imports: [
         TypeOrmModule.forFeature([ClassRepository]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
+        CheckinModule,
         TeacherModule,
-        CheckinModule
     ],
     exports: [
         ClassService,
         PassportModule.register({ defaultStrategy: 'jwt' }),
     ],
-    providers: [ClassService],
     controllers: [ClassController],
+    providers: [ClassService],
 })
 export class ClassModule {}
