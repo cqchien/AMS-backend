@@ -1,3 +1,4 @@
+import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
 import { CheckinEntity } from './checkin.entity';
 import { ClassService } from './../class/class.service';
 import { StudentService } from './../student/student.service';
@@ -40,8 +41,17 @@ export class CheckinService {
 
     async checkin(createCheckinDto: CheckinPayloadDto): Promise<CheckinEntity> {
         const { classId, studentId, qrcode } = createCheckinDto;
-        const classEntity = await this.classService.getOne(classId);
-        const studentEntity = await this.studentService.getOne(studentId);
+        const pathQR = `qrcode/${classId}_${qrcode}.png`;
+        const [classEntity, studentEntity] = await Promise.all([
+            this.classService.getOne(classId),
+            this.studentService.getOne(studentId),
+        ]);
+        const date = new Date();
+        const QRCreatedDate = new Date(classEntity.QRCreatedAt);
+        const constraintDate = date.getTime() - QRCreatedDate.getTime();
+        if (classEntity.qrCode !== pathQR || constraintDate > 3600000 * 5) {
+            throw new UserNotFoundException('QRCode is invalid');
+        }
         const payload = {
             class: classEntity,
             student: studentEntity,
