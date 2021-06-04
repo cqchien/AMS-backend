@@ -42,8 +42,8 @@ export class ClassDto extends AbstractDto {
         this.room = classEntity.room;
         this.startTime = classEntity.startTime;
         this.endTime = classEntity.endTime;
-        this.qrCode = classEntity.qrCode;
-        this.QRCreatedAt = classEntity.QRCreatedAt;
+        this.qrCode = classEntity.qrCode ? classEntity.qrCode : null
+        this.QRCreatedAt = classEntity.QRCreatedAt ? classEntity.QRCreatedAt : null;
         this.teacher = classEntity.teacher ? classEntity.teacher.toDto() : '';
     }
 }

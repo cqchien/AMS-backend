@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { ClassEntity } from './class.entity';
 import { UtilsService } from './../../providers/utils.service';
 import { CheckinService } from './../checkin/checkin.service';
@@ -156,7 +157,7 @@ export class ClassService {
 
         // If user send teacherId, check teacher is exist or not
         let teacher: TeacherEntity;
-        if (teacherId) {
+        if (!isEmpty(teacherId) ) {
             teacher = await this.teacherService.getOne(teacherId);
             if (!teacher) {
                 throw new UserNotFoundException('Teacher not found');

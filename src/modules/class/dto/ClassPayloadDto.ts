@@ -36,9 +36,9 @@ export class CreateClassDto {
 
     @IsString()
     @ApiPropertyOptional()
-    qrCode?: string;
+    qrCode?: string = '';
 
-    @IsDate()
+    @IsString()
     @ApiPropertyOptional()
-    QRCreatedAt?: Date;
+    QRCreatedAt?: string = '';
 }
