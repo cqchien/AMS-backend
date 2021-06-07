@@ -47,7 +47,6 @@ export class ClassService {
             ]);
         }
         queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
-        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await queryBuilder.paginate(
             pageOptionDto,
         );
@@ -71,7 +70,6 @@ export class ClassService {
             .leftJoinAndSelect('class.teacher', 'teacher')
             .andWhere('teacher.id = :teacherId', { teacherId });
         queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
-        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await classesByTeacher.paginate(
             pageOptionDto,
         );
@@ -98,7 +96,6 @@ export class ClassService {
             .andWhere('student.id = :studentId', { studentId });
 
         queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
-        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await classesByStudent.paginate(
             pageOptionDto,
         );
