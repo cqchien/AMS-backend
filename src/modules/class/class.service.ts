@@ -33,6 +33,7 @@ export class ClassService {
      */
     async getAllClasses(
         pageOptionDto: PageOptionsDto,
+        isFinish: boolean,
     ): Promise<PageDto<ClassDto>> {
         let queryBuilder = this.classRepository.createQueryBuilder('class');
         queryBuilder = queryBuilder.leftJoinAndSelect(
@@ -45,6 +46,8 @@ export class ClassService {
                 'room',
             ]);
         }
+        queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
+        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await queryBuilder.paginate(
             pageOptionDto,
         );
@@ -61,11 +64,14 @@ export class ClassService {
     async getClassesByTeacher(
         pageOptionDto: PageOptionsDto,
         teacherId: string,
+        isFinish: boolean,
     ): Promise<PageDto<ClassDto>> {
         const queryBuilder = this.classRepository.createQueryBuilder('class');
         const classesByTeacher = queryBuilder
             .leftJoinAndSelect('class.teacher', 'teacher')
             .andWhere('teacher.id = :teacherId', { teacherId });
+        queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
+        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await classesByTeacher.paginate(
             pageOptionDto,
         );
@@ -92,6 +98,7 @@ export class ClassService {
             .andWhere('student.id = :studentId', { studentId });
 
         queryBuilder.andWhere('class.isFinish = :isFinish', { isFinish });
+        queryBuilder.orderBy('updatedAt', 'DESC');
         const { items, pageMetaDto } = await classesByStudent.paginate(
             pageOptionDto,
         );
@@ -112,7 +119,7 @@ export class ClassService {
     ): Promise<PageDto<ClassDto> | any> {
         const { role } = user;
         if (role === RoleType.TEACHER) {
-            return this.getClassesByTeacher(pageOptionDto, user.id);
+            return this.getClassesByTeacher(pageOptionDto, user.id, isFinish);
         } else if (role == RoleType.STUDENT) {
             const classes = await this.getClassesByStudent(
                 pageOptionDto,
@@ -130,7 +137,7 @@ export class ClassService {
             }
             return { data, ...classes.meta };
         } else {
-            return this.getAllClasses(pageOptionDto);
+            return this.getAllClasses(pageOptionDto, isFinish);
         }
     }
 
@@ -157,7 +164,7 @@ export class ClassService {
 
         // If user send teacherId, check teacher is exist or not
         let teacher: TeacherEntity;
-        if (!isEmpty(teacherId) ) {
+        if (!isEmpty(teacherId)) {
             teacher = await this.teacherService.getOne(teacherId);
             if (!teacher) {
                 throw new UserNotFoundException('Teacher not found');
