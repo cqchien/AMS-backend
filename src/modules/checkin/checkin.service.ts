@@ -1,3 +1,4 @@
+import { PageOptionsDto } from './../../common/dto/PageOptionsDto';
 import { UserNotFoundException } from './../../exceptions/user-not-found.exception';
 import { CheckinEntity } from './checkin.entity';
 import { ClassService } from './../class/class.service';
@@ -26,14 +27,15 @@ export class CheckinService {
         const queryBuilder = this.checkinRepository.createQueryBuilder(
             'checkin',
         );
-        queryBuilder.andWhere('checkin.class_id = :classId', { classId });
+        queryBuilder
+            .andWhere('checkin.class_id = :classId', { classId })
+            .andWhere('checkin.isCheckin = true');
         if (isFinish) {
             queryBuilder
                 .leftJoinAndSelect('checkin.class', 'class')
                 .andWhere('class.isFinish = :isFinish', { isFinish });
         }
         const timesClassActive = await queryBuilder.getCount();
-
         queryBuilder.andWhere('checkin.student_id = :studentId', { studentId });
         const timesCheckin = await queryBuilder.getCount();
         return `${timesCheckin}/${timesClassActive}`;
@@ -49,15 +51,27 @@ export class CheckinService {
         const date = new Date();
         const QRCreatedDate = new Date(classEntity.QRCreatedAt);
         const constraintDate = date.getTime() - QRCreatedDate.getTime();
-        if (classEntity.qrCode !== pathQR || constraintDate > 3600000 * 100000) {
+        if (
+            classEntity.qrCode !== pathQR ||
+            constraintDate > 3600000 * 100000
+        ) {
             throw new UserNotFoundException('QRCode is invalid');
         }
         const payload = {
             class: classEntity,
             student: studentEntity,
+            isCheckin: true,
         };
 
         const checkinEntity = this.checkinRepository.create(payload);
         return this.checkinRepository.save(checkinEntity);
     }
+
+    // async getAllCheckinWithClass(
+    //     pageOptionDto: PageOptionsDto,
+    //     classId: string,
+    // ): Promise<any> {
+    //     const classEntity = await this.classService.getOne(classId);
+    //     const 
+    // }
 }
