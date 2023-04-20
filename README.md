@@ -1,5 +1,5 @@
 ### #Attendance Management System (AMS) Basic documentations.
-
+mind mind
 ---
 ### #KEEP IN MIND
 - services, repositories... may copied from different module so if you are editing any (or u r going to), remember to check others (if existed)
